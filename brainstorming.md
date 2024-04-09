@@ -31,7 +31,7 @@ Servos have a default range of 180 degrees, but this can be changed. The angle i
 
 Servos can be directed to move to an absolute position or relatively to the current position. The current positions can be read via (ANOTHER COMMAND). Angles are 8 bit unsigned integers.
 
-Angles beyond the maximum range, when setting absolutely, are clamped to the maximum/minimum angles. When setting relatively, the angle is added to the current position and wraps around.
+Angles beyond the maximum range, when setting absolutely, are clamped to the maximum/minimum angles. When setting relatively, the angle is added to the current position and wraps if needed.
 
 | Bit | Use                           |
 | --- | ----------------------------- |
@@ -59,7 +59,7 @@ Angles beyond the maximum range, when setting absolutely, are clamped to the max
 
 Servo velocity can be set in 2 ways:
 
-1. degrees per (ms or sec)
+1. degrees per ms/sec (would time per degree make more sense?)
 2. time to complete movement (ms or sec)
 
 | Bit | Use                              |
@@ -83,6 +83,27 @@ Servo velocity can be set in 2 ways:
 
 ## `0x053` Set ramping/acceleration
 
-## `0x05D` Fetch current position
+## `0x05D` Fetch servo position
+
+Only one servo can be selected for this to work.
+
+| Bit | Use        |
+| --- | ---------- |
+| 15  |            |
+| 14  |            |
+| 13  |            |
+| 12  |            |
+| 11  |            |
+| 10  |            |
+| 9   |            |
+| 8   |            |
+| 7   | `Angle[7]` |
+| 6   | `Angle[6]` |
+| 5   | `Angle[5]` |
+| 4   | `Angle[4]` |
+| 3   | `Angle[3]` |
+| 2   | `Angle[2]` |
+| 1   | `Angle[1]` |
+| 0   | `Angle[0]` |
 
 ## `0x05E` Execute movement
