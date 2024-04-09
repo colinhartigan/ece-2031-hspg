@@ -62,24 +62,26 @@ Servo velocity can be set in 2 ways:
 1. degrees per ms/sec (would time per degree make more sense?)
 2. time to complete movement (ms or sec)
 
-| Bit | Use                              |
-| --- | -------------------------------- |
-| 15  | `0`: degrees/time, `1`: absolute |
-| 14  | `0`: ms, `1`: sec                |
-| 13  |                                  |
-| 12  |                                  |
-| 11  |                                  |
-| 10  |                                  |
-| 9   |                                  |
-| 8   |                                  |
-| 7   | `Time[7]`                        |
-| 6   | `Time[6]`                        |
-| 5   | `Time[5]`                        |
-| 4   | `Time[4]`                        |
-| 3   | `Time[3]`                        |
-| 2   | `Time[2]`                        |
-| 1   | `Time[1]`                        |
-| 0   | `Time[0]`                        |
+The motor can stay torqued or can release at the end of the movement.
+
+| Bit | Use                                    |
+| --- | -------------------------------------- |
+| 15  | `0`: degrees/time, `1`: absolute       |
+| 14  | `0`: ms, `1`: sec                      |
+| 13  | `0`: release torque, `1`: keep torqued |
+| 12  |                                        |
+| 11  |                                        |
+| 10  |                                        |
+| 9   |                                        |
+| 8   |                                        |
+| 7   | `Time[7]`                              |
+| 6   | `Time[6]`                              |
+| 5   | `Time[5]`                              |
+| 4   | `Time[4]`                              |
+| 3   | `Time[3]`                              |
+| 2   | `Time[2]`                              |
+| 1   | `Time[1]`                              |
+| 0   | `Time[0]`                              |
 
 ## `0x053` Set ramping/acceleration
 
