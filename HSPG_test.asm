@@ -1,17 +1,29 @@
 ORG 0
 
-Run:
-	IN 		Switches
-	SUB		State
-	JZERO	Skip
-	
-	IN 		Switches
-	STORE	State
-	OUT 	LEDs
-	OUT 	HSPG
+Step:
+	LOAD Angle
+	ADDI 5
+	STORE Angle
+	ADDI -180
+	JNEG Skip
+	LOADI 0
+	STORE Angle
 	
 Skip:
-	JUMP 	Run
+	LOAD Angle
+	OUT HSPG
+	OUT Timer
+	
+Wait:
+	IN Timer
+	ADDI -5
+	JNEG Wait
+    JUMP Step
+	
+	
+; Constants
+ORG 25
+Angle:	   DW  0
 	
 ; IO address constants
 Switches:  EQU 000
@@ -22,4 +34,3 @@ Hex1:      EQU 005
 
 HSPG:      EQU &H50
 
-State:	   DW  0

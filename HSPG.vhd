@@ -43,11 +43,10 @@ begin
     process (RESETN, CS) begin
         if RESETN = '0' then
             command <= x"0000";
-			servo1_target <= x"00";
+				servo1_target <= x"00";
 				
         elsif IO_WRITE = '1' and rising_edge(CS) then
-		  
-            -- command <= IO_DATA;
+            command <= IO_DATA;
             -- servo1_speed <= command(3 downto 0);
             -- servo1_target <= command(11 downto 4)
             servo1_target <= command(7 downto 0); -- 8 bits to represent 0-180 degrees
@@ -66,7 +65,7 @@ begin
             -- each clock cycle, a counter is incremented.
 				
 				count <= count + 1;
-				
+								
 				-- clamp angles (this range should be customizable)
 				if servo1_angle > 180 then
 					servo1_angle <= x"B4";
