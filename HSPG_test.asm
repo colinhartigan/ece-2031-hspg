@@ -2,7 +2,7 @@ ORG 0
 
 Step:
 	LOAD Angle
-	ADDI 5
+	ADDI 45
 	STORE Angle
 	ADDI -180
 	JNEG Skip
@@ -12,11 +12,12 @@ Step:
 Skip:
 	LOAD Angle
 	OUT HSPG
+	OUT HEX0
 	OUT Timer
 	
 Wait:
 	IN Timer
-	ADDI -5
+	ADDI -30
 	JNEG Wait
     JUMP Step
 	

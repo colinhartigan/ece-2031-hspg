@@ -75,7 +75,7 @@ begin
 				if servo1_angle /= servo1_target then
 					servo1_timer <= servo1_timer + 1;
 				
-					if servo1_timer = x"0100" then -- every X cycles (for now, this will be customizable)
+					if servo1_timer = x"0400" then -- every X cycles (for now, this will be customizable)
 						if servo1_angle > servo1_target then
 							servo1_angle <= servo1_angle - x"01";
 							

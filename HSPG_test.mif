@@ -6,7 +6,7 @@ DATA_RADIX=HEX;
 
 CONTENT BEGIN
 0000: 0819; -- 	LOAD Angle
-0001: 6805; -- 	ADDI 5
+0001: 680A; -- 	ADDI 10
 0002: 1019; -- 	STORE Angle
 0003: 6F4C; -- 	ADDI -180
 0004: 3007; -- 	JNEG Skip
@@ -14,12 +14,13 @@ CONTENT BEGIN
 0006: 1019; -- 	STORE Angle
 0007: 0819; -- 	LOAD Angle
 0008: 9850; -- 	OUT HSPG
-0009: 9802; -- 	OUT Timer
-000A: 9002; -- 	IN Timer
-000B: 6FFB; -- 	ADDI -5
-000C: 300A; -- 	JNEG Wait
-000D: 2800; --     JUMP Step
-[000E..0018] : 0000; -- [empty memory]
+0009: 9804; -- 	OUT HEX0
+000A: 9802; -- 	OUT Timer
+000B: 9002; -- 	IN Timer
+000C: 6FF1; -- 	ADDI -15
+000D: 300B; -- 	JNEG Wait
+000E: 2800; --     JUMP Step
+[000F..0018] : 0000; -- [empty memory]
 0019: 0000; -- Angle:	   DW  0
 [001A..07FF] : 0000; -- [empty memory]
 END;
