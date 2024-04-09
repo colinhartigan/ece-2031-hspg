@@ -54,6 +54,7 @@ begin
         end if;
     end process;
 
+    -- motor moving stuff
     process (RESETN, CLOCK)
     begin
         if (RESETN = '0') then
@@ -62,8 +63,7 @@ begin
             -- servo1_angle <= x"00";
 				
         elsif rising_edge(CLOCK) then
-            -- each clock cycle, a counter is incremented.
-				
+            -- count counts every clock tick
 				count <= count + 1;
 								
 				-- clamp angles (this range should be customizable)
