@@ -55,7 +55,6 @@ begin
         end if;
     end process;
 
-
     process (RESETN, CLOCK)
     begin
         if (RESETN = '0') then
