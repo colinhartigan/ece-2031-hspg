@@ -10,15 +10,16 @@ use lpm.lpm_components.all;
 
 entity HSPG is
     port(
-        CS          	: in  std_logic;
+        CS          	: in std_logic;
 
-        IO_SEL    	    : in  std_logic_vector(3 downto 0);
-        IO_DATA     	: in  std_logic_vector(15 downto 0);
+        IO_WRITE        : in std_logic;
+        IO_SEL    	    : in std_logic_vector(3 downto 0);
+        IO_DATA     	: in std_logic_vector(15 downto 0);
 
-        CLOCK       	: in  std_logic;
-        RESETN      	: in  std_logic;
+        CLOCK       	: in std_logic;
+        RESETN      	: in std_logic;
 
-        PULSE      	    : out std_logic;
+        PULSE      	    : out std_logic
 --      PULSE2			: out std_logic
 --		PULSE3			: out std_logic;
 --	    PULSE4			: out std_logic
@@ -44,12 +45,12 @@ begin
             command <= x"0000";
 			servo1_target <= x"00";
 				
-        elsif IO_SEL = b"0001" and rising_edge(CS) then
+        elsif IO_WRITE = '1' and rising_edge(CS) then
 		  
             -- command <= IO_DATA;
             -- servo1_speed <= command(3 downto 0);
             -- servo1_target <= command(11 downto 4)
-            servo1_target <= command(7 downto 0);
+            servo1_target <= command(7 downto 0); -- 8 bits to represent 0-180 degrees
 				
         end if;
     end process;

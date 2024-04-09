@@ -19,7 +19,5 @@ LEDs:      EQU 001
 Timer:     EQU 002
 Hex0:      EQU 004
 Hex1:      EQU 005
-
 HSPG:      EQU &H50
-
 State:	   DW  0

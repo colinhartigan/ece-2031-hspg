@@ -10,8 +10,8 @@ ENTITY IO_DECODER IS
 
   PORT
   (
-    IO_ADDR         : IN STD_LOGIC_VECTOR(10 downto 0);
-    IO_CYCLE        : IN STD_LOGIC;
+    IO_ADDR         : IN  STD_LOGIC_VECTOR(10 downto 0);
+    IO_CYCLE        : IN  STD_LOGIC;
     SWITCH_EN       : OUT STD_LOGIC;
     LED_EN          : OUT STD_LOGIC;
     TIMER_EN        : OUT STD_LOGIC;
@@ -30,14 +30,15 @@ begin
 
   ADDR_INT <= TO_INTEGER(UNSIGNED(IO_ADDR));
         
-  SWITCH_EN     <= '1' WHEN (ADDR_INT = 16#000#) and (IO_CYCLE = '1') ELSE '0';
-  LED_EN        <= '1' WHEN (ADDR_INT = 16#001#) and (IO_CYCLE = '1') ELSE '0';
-  TIMER_EN      <= '1' WHEN (ADDR_INT = 16#002#) and (IO_CYCLE = '1') ELSE '0';
-  HEX0_EN       <= '1' WHEN (ADDR_INT = 16#004#) and (IO_CYCLE = '1') ELSE '0';
-  HEX1_EN       <= '1' WHEN (ADDR_INT = 16#005#) and (IO_CYCLE = '1') ELSE '0';
-
-  -- mapping for HSPG selection bits
   if(IO_CYCLE = '1') then
+
+    SWITCH_EN <= '1' WHEN (ADDR_INT = 16#000#) ELSE '0';
+    LED_EN    <= '1' WHEN (ADDR_INT = 16#001#) ELSE '0';
+    TIMER_EN  <= '1' WHEN (ADDR_INT = 16#002#) ELSE '0';
+    HEX0_EN   <= '1' WHEN (ADDR_INT = 16#004#) ELSE '0';
+    HEX1_EN   <= '1' WHEN (ADDR_INT = 16#005#) ELSE '0';
+
+    -- mapping for HSPG selection bits
     case ADDR_INT is 
         when 16#050# => HSPG_SEL <= "0001";
         when 16#051# => HSPG_SEL <= "0010";
