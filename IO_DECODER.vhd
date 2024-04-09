@@ -37,7 +37,7 @@ begin
     TIMER_EN  <= '1' WHEN (ADDR_INT = 16#002#) AND (IO_CYCLE = '1') ELSE '0';
     HEX0_EN   <= '1' WHEN (ADDR_INT = 16#004#) AND (IO_CYCLE = '1') ELSE '0';
     HEX1_EN   <= '1' WHEN (ADDR_INT = 16#005#) AND (IO_CYCLE = '1') ELSE '0';
-    HSPG_EN   <= '1' WHEN (ADDR_INT = 16#050#) AND (IO_CYCLE = '1') ELSE '0';
+    HSPG_EN   <= '1' WHEN (ADDR_INT >= 16#050#) AND (ADDR_INT <= 16#05E) AND (IO_CYCLE = '1') ELSE '0';
 
     HSPG_SEL <= "0001" when (ADDR_INT = 16#050#) AND (IO_CYCLE = '1') else
                 "0010" when (ADDR_INT = 16#051#) AND (IO_CYCLE = '1') else
