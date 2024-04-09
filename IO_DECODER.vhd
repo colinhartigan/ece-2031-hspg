@@ -29,35 +29,28 @@ ARCHITECTURE a OF IO_DECODER IS
 begin
 
   ADDR_INT <= TO_INTEGER(UNSIGNED(IO_ADDR));
-        
-  if(IO_CYCLE = '1') then
 
-    SWITCH_EN <= '1' WHEN (ADDR_INT = 16#000#) ELSE '0';
-    LED_EN    <= '1' WHEN (ADDR_INT = 16#001#) ELSE '0';
-    TIMER_EN  <= '1' WHEN (ADDR_INT = 16#002#) ELSE '0';
-    HEX0_EN   <= '1' WHEN (ADDR_INT = 16#004#) ELSE '0';
-    HEX1_EN   <= '1' WHEN (ADDR_INT = 16#005#) ELSE '0';
+    SWITCH_EN <= '1' WHEN (ADDR_INT = 16#000#) AND (IO_CYCLE = '1') ELSE '0';
+    LED_EN    <= '1' WHEN (ADDR_INT = 16#001#) AND (IO_CYCLE = '1') ELSE '0';
+    TIMER_EN  <= '1' WHEN (ADDR_INT = 16#002#) AND (IO_CYCLE = '1') ELSE '0';
+    HEX0_EN   <= '1' WHEN (ADDR_INT = 16#004#) AND (IO_CYCLE = '1') ELSE '0';
+    HEX1_EN   <= '1' WHEN (ADDR_INT = 16#005#) AND (IO_CYCLE = '1') ELSE '0';
 
-    -- mapping for HSPG selection bits
-    case ADDR_INT is 
-        when 16#050# => HSPG_SEL <= "0001";
-        when 16#051# => HSPG_SEL <= "0010";
-        when 16#052# => HSPG_SEL <= "0011";
-        when 16#053# => HSPG_SEL <= "0100";
-        when 16#054# => HSPG_SEL <= "0101";
-        when 16#055# => HSPG_SEL <= "0110";
-        when 16#056# => HSPG_SEL <= "0111";
-        when 16#057# => HSPG_SEL <= "1000";
-        when 16#058# => HSPG_SEL <= "1001";
-        when 16#059# => HSPG_SEL <= "1010";
-        when 16#05A# => HSPG_SEL <= "1011";
-        when 16#05B# => HSPG_SEL <= "1100";
-        when 16#05C# => HSPG_SEL <= "1101";
-        when 16#05D# => HSPG_SEL <= "1110";
-        when 16#05E# => HSPG_SEL <= "1111";
+    HSPG_SEL <= "0001" when (ADDR_INT = 16#050#) AND (IO_CYCLE = '1') else
+                "0010" when (ADDR_INT = 16#051#) AND (IO_CYCLE = '1') else
+                "0011" when (ADDR_INT = 16#052#) AND (IO_CYCLE = '1') else
+                "0100" when (ADDR_INT = 16#053#) AND (IO_CYCLE = '1') else
+                "0101" when (ADDR_INT = 16#054#) AND (IO_CYCLE = '1') else
+                "0110" when (ADDR_INT = 16#055#) AND (IO_CYCLE = '1') else
+                "0111" when (ADDR_INT = 16#056#) AND (IO_CYCLE = '1') else
+                "1000" when (ADDR_INT = 16#057#) AND (IO_CYCLE = '1') else
+                "1001" when (ADDR_INT = 16#058#) AND (IO_CYCLE = '1') else
+                "1010" when (ADDR_INT = 16#059#) AND (IO_CYCLE = '1') else
+                "1011" when (ADDR_INT = 16#05A#) AND (IO_CYCLE = '1') else
+                "1100" when (ADDR_INT = 16#05B#) AND (IO_CYCLE = '1') else
+                "1101" when (ADDR_INT = 16#05C#) AND (IO_CYCLE = '1') else
+                "1110" when (ADDR_INT = 16#05D#) AND (IO_CYCLE = '1') else
+                "1111" when (ADDR_INT = 16#05E#) AND (IO_CYCLE = '1') else
+                "0000";
 
-        when others => HSPG_SEL <= "0000"
-    end case;
-  end if;
-  
 END a;
