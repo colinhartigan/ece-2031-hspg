@@ -1,13 +1,13 @@
-Fitter Status : Successful - Tue Apr 09 11:25:52 2024
+Fitter Status : Successful - Wed Apr 10 12:31:35 2024
 Quartus Prime Version : 19.1.0 Build 670 09/22/2019 SJ Lite Edition
 Revision Name : SCOMP
 Top-level Entity Name : SCOMP_System
 Family : Cyclone V
 Device : 5CSXFC6D6F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 585 / 41,910 ( 1 % )
-Total registers : 889
-Total pins : 69 / 499 ( 14 % )
+Logic utilization (in ALMs) : 667 / 41,910 ( 2 % )
+Total registers : 975
+Total pins : 68 / 499 ( 14 % )
 Total virtual pins : 0
 Total block memory bits : 45,056 / 5,662,720 ( < 1 % )
 Total RAM Blocks : 6 / 553 ( 1 % )

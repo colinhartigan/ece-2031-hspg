@@ -5,22 +5,72 @@ ADDRESS_RADIX=HEX;
 DATA_RADIX=HEX;
 
 CONTENT BEGIN
-0000: 0819; -- 	LOAD Angle
-0001: 680A; -- 	ADDI 10
-0002: 1019; -- 	STORE Angle
-0003: 6F4C; -- 	ADDI -180
-0004: 3007; -- 	JNEG Skip
-0005: B800; -- 	LOADI 0
-0006: 1019; -- 	STORE Angle
-0007: 0819; -- 	LOAD Angle
-0008: 9850; -- 	OUT HSPG
-0009: 9804; -- 	OUT HEX0
-000A: 9802; -- 	OUT Timer
-000B: 9002; -- 	IN Timer
-000C: 6FF1; -- 	ADDI -15
-000D: 300B; -- 	JNEG Wait
-000E: 2800; --     JUMP Step
-[000F..0018] : 0000; -- [empty memory]
-0019: 0000; -- Angle:	   DW  0
-[001A..07FF] : 0000; -- [empty memory]
+0000: B80F; -- 	LOADI 	&B1111
+0001: 9850; -- 	OUT 	ServoSel
+0002: BC00; -- 	LOADI 	&H400
+0003: 9852; -- 	OUT		SpeedSel
+0004: 8027; -- 	CALL 	CheckReset
+0005: 083E; -- 	LOAD 	Angle1
+0006: 680A; -- 	ADDI 	10
+0007: 8031; -- 	CALL 	Check
+0008: 103E; -- 	STORE 	Angle1
+0009: 083F; -- 	LOAD 	Angle2
+000A: 6814; -- 	ADDI 	20
+000B: 8031; -- 	CALL 	Check
+000C: 103F; -- 	STORE 	Angle2
+000D: 0840; -- 	LOAD 	Angle3
+000E: 681E; -- 	ADDI 	30
+000F: 8031; -- 	CALL 	Check
+0010: 1040; -- 	STORE 	Angle3
+0011: 0841; -- 	LOAD 	Angle4
+0012: 6828; -- 	ADDI 	40
+0013: 8031; -- 	CALL 	Check
+0014: 1041; -- 	STORE 	Angle4
+0015: B801; -- 	LOADI 	&B0001
+0016: 9850; -- 	OUT 	ServoSel
+0017: 083E; -- 	LOAD 	Angle1
+0018: 9851; -- 	OUT 	AngleSel
+0019: B802; -- 	LOADI 	&B0010
+001A: 9850; -- 	OUT 	ServoSel
+001B: 083F; -- 	LOAD 	Angle2
+001C: 9851; -- 	OUT 	AngleSel
+001D: B804; -- 	LOADI 	&B0100
+001E: 9850; -- 	OUT 	ServoSel
+001F: 0840; -- 	LOAD 	Angle3
+0020: 9851; -- 	OUT 	AngleSel
+0021: B808; -- 	LOADI 	&B1000
+0022: 9850; -- 	OUT 	ServoSel
+0023: 0841; -- 	LOAD 	Angle4
+0024: 9851; -- 	OUT 	AngleSel
+0025: 8038; -- 	CALL 	Wait
+0026: 2804; -- 	JUMP 	Step
+0027: 083E; -- 	LOAD 	Angle1
+0028: 8031; -- 	CALL 	Check
+0029: 402B; -- 	JZERO	Reset
+002A: 8800; -- 	RETURN
+002B: B800; -- 	LOADI 	0
+002C: 103E; -- 	STORE 	Angle1
+002D: 103F; -- 	STORE 	Angle2
+002E: 1040; -- 	STORE 	Angle3
+002F: 1041; -- 	STORE 	Angle4
+0030: 8800; -- 	RETURN
+0031: 1042; -- 	STORE 	Temp
+0032: 6F4B; -- 	ADDI 	-181
+0033: 3036; -- 	JNEG	CheckGood
+0034: B800; -- 	LOADI 	0
+0035: 8800; -- 	RETURN
+0036: 0842; -- 	LOAD 	Temp
+0037: 8800; -- 	RETURN
+0038: 9802; -- 	OUT 	Timer
+0039: 9002; -- 	IN 		Timer
+003A: 6FF6; -- 	ADDI 	-10
+003B: 3039; -- 	JNEG 	WaitLoop
+003C: 8800; -- 	RETURN
+003D: 0000; -- Iter:		DW 	0
+003E: 0000; -- Angle1:	   	DW  0
+003F: 0000; -- Angle2:	   	DW  0
+0040: 0000; -- Angle3: 	DW 	0
+0041: 0000; -- Angle4:		DW	0
+0042: 0000; -- Temp:		DW 	0
+[0043..07FF] : 0000; -- [empty memory]
 END;

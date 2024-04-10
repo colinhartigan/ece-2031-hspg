@@ -348,7 +348,7 @@ RESERVED_INPUT               : AH27      :        :                   :         
 RESERVED_INPUT               : AH28      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AH29      :        :                   :         : 5A        :                
 RESERVED_INPUT               : AH30      :        :                   :         : 5A        :                
-CONN[0]                      : AJ1       : output : 3.3-V LVTTL       :         : 3A        : Y              
+RESERVED_INPUT               : AJ1       :        :                   :         : 3A        :                
 RESERVED_INPUT               : AJ2       :        :                   :         : 3A        :                
 GND                          : AJ3       : gnd    :                   :         :           :                
 KEY0                         : AJ4       : input  : 3.3-V LVTTL       :         : 3B        : Y              

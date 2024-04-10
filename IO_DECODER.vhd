@@ -19,7 +19,7 @@ ENTITY IO_DECODER IS
     HEX1_EN         : OUT STD_LOGIC;
 
     HSPG_EN         : OUT STD_LOGIC;
-	HSPG_SEL	    : OUT STD_LOGIC_VECTOR(3 downto 0)
+	 HSPG_SEL	     : OUT STD_LOGIC_VECTOR(3 downto 0)
   );
 
 END ENTITY;
@@ -37,23 +37,23 @@ begin
     TIMER_EN  <= '1' WHEN (ADDR_INT = 16#002#) AND (IO_CYCLE = '1') ELSE '0';
     HEX0_EN   <= '1' WHEN (ADDR_INT = 16#004#) AND (IO_CYCLE = '1') ELSE '0';
     HEX1_EN   <= '1' WHEN (ADDR_INT = 16#005#) AND (IO_CYCLE = '1') ELSE '0';
-    HSPG_EN   <= '1' WHEN (ADDR_INT >= 16#050#) AND (ADDR_INT <= 16#05E) AND (IO_CYCLE = '1') ELSE '0';
+    HSPG_EN   <= '1' WHEN (ADDR_INT >= 16#050#) AND (ADDR_INT <= 16#05E#) AND (IO_CYCLE = '1') ELSE '0';
 
-    HSPG_SEL <= "0001" when (ADDR_INT = 16#050#) AND (IO_CYCLE = '1') else
-                "0010" when (ADDR_INT = 16#051#) AND (IO_CYCLE = '1') else
-                "0011" when (ADDR_INT = 16#052#) AND (IO_CYCLE = '1') else
-                "0100" when (ADDR_INT = 16#053#) AND (IO_CYCLE = '1') else
-                "0101" when (ADDR_INT = 16#054#) AND (IO_CYCLE = '1') else
-                "0110" when (ADDR_INT = 16#055#) AND (IO_CYCLE = '1') else
-                "0111" when (ADDR_INT = 16#056#) AND (IO_CYCLE = '1') else
-                "1000" when (ADDR_INT = 16#057#) AND (IO_CYCLE = '1') else
-                "1001" when (ADDR_INT = 16#058#) AND (IO_CYCLE = '1') else
-                "1010" when (ADDR_INT = 16#059#) AND (IO_CYCLE = '1') else
-                "1011" when (ADDR_INT = 16#05A#) AND (IO_CYCLE = '1') else
-                "1100" when (ADDR_INT = 16#05B#) AND (IO_CYCLE = '1') else
-                "1101" when (ADDR_INT = 16#05C#) AND (IO_CYCLE = '1') else
-                "1110" when (ADDR_INT = 16#05D#) AND (IO_CYCLE = '1') else
-                "1111" when (ADDR_INT = 16#05E#) AND (IO_CYCLE = '1') else
+    HSPG_SEL <= "0001" when (ADDR_INT = 16#050#) else
+                "0010" when (ADDR_INT = 16#051#) else
+                "0011" when (ADDR_INT = 16#052#) else
+                "0100" when (ADDR_INT = 16#053#) else
+                "0101" when (ADDR_INT = 16#054#) else
+                "0110" when (ADDR_INT = 16#055#) else
+                "0111" when (ADDR_INT = 16#056#) else
+                "1000" when (ADDR_INT = 16#057#) else
+                "1001" when (ADDR_INT = 16#058#) else
+                "1010" when (ADDR_INT = 16#059#) else
+                "1011" when (ADDR_INT = 16#05A#) else
+                "1100" when (ADDR_INT = 16#05B#) else
+                "1101" when (ADDR_INT = 16#05C#) else
+                "1110" when (ADDR_INT = 16#05D#) else
+                "1111" when (ADDR_INT = 16#05E#) else
                 "0000";
 
 END a;
