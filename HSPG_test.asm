@@ -3,98 +3,101 @@ ORG 0
 Setup:
 	LOADI 	&B1111
 	OUT 	ServoSel
-	LOADI 	&H400
+	LOADI 	60
 	OUT		SpeedSel
 
-Step:
-	CALL 	CheckReset
-	
-	LOAD 	Angle1
-	ADDI 	100
-	CALL 	Check
-	STORE 	Angle1
-	
-	LOAD 	Angle2
-	ADDI 	20
-	CALL 	Check
-	STORE 	Angle2
-	
-	LOAD 	Angle3
-	ADDI 	30
-	CALL 	Check
-	STORE 	Angle3
-	
-	LOAD 	Angle4
-	ADDI 	40
-	CALL 	Check
-	STORE 	Angle4
-	
-Send:
+Run:
+
+	; forewards wave
 	LOADI 	&B0001
 	OUT 	ServoSel
-	LOAD 	Angle1
+	LOADI 	180
 	OUT 	AngleSel
+	
+	LOADI	10
+	CALL 	Wait
 	
 	LOADI 	&B0010
 	OUT 	ServoSel
-	LOAD 	Angle2
+	LOADI 	180
 	OUT 	AngleSel
+	
+	LOADI	10
+	CALL 	Wait
 	
 	LOADI 	&B0100
 	OUT 	ServoSel
-	LOAD 	Angle3
+	LOADI 	180
 	OUT 	AngleSel
+	
+	LOADI	10
+	CALL 	Wait
 	
 	LOADI 	&B1000
 	OUT 	ServoSel
-	LOAD 	Angle4
+	LOADI 	180
 	OUT 	AngleSel
 	
+	; backwards wave
+	LOADI	10
 	CALL 	Wait
 	
-	JUMP 	Step
+	LOADI 	&B0001
+	OUT 	ServoSel
+	LOADI 	0
+	OUT 	AngleSel
 	
+	LOADI	10
+	CALL 	Wait
 	
-CheckReset:
-	LOAD 	Angle1
-	CALL 	Check
-	JZERO	Reset
-	RETURN
+	LOADI 	&B0010
+	OUT 	ServoSel
+	LOADI 	0
+	OUT 	AngleSel
+	
+	LOADI	10
+	CALL 	Wait
+	
+	LOADI 	&B0100
+	OUT 	ServoSel
+	LOADI 	0
+	OUT 	AngleSel
+	
+	LOADI	10
+	CALL 	Wait
+	
+	LOADI 	&B1000
+	OUT 	ServoSel
+	LOADI 	0
+	OUT 	AngleSel
+	
+	JUMP	Run	
+	
 Reset:
-	LOADI 	0
-	STORE 	Angle1
-	STORE 	Angle2
-	STORE 	Angle3
-	STORE 	Angle4
-	RETURN
+	LOADI 	&B1111
+	OUT 	ServoSel
+	LOADI 	&HFF
+	OUT		SpeedSel
 	
-Check:
-	STORE 	Temp
-	ADDI 	-181
-	JNEG	CheckGood
 	LOADI 	0
-	RETURN
-CheckGood:
-	LOAD 	Temp
+	OUT		AngleSel
+	
 	RETURN
 	
 Wait:
+	STORE	TargetTime
 	OUT 	Timer
 
 WaitLoop:
 	IN 		Timer
-	ADDI 	-10
+	OUT 	Hex0
+	SUB		TargetTime
 	JNEG 	WaitLoop
 	RETURN
 
 	
 
-Iter:		DW 	0
-Angle1:	   	DW  0
-Angle2:	   	DW  0
-Angle3: 	DW 	0
-Angle4:		DW	0
-Temp:		DW 	0
+TargetTime:	DW 	0
 	
 ; IO address constants
 Switches:  	EQU 000

@@ -7,6 +7,7 @@ library lpm;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;
 use lpm.lpm_components.all;
+use ieee.numeric_std.all;
 
 entity HSPG is
     port(
@@ -30,25 +31,25 @@ architecture a of HSPG is
 	 
 	 signal motor_sel	: std_logic_vector(15 downto 0);
 	 
-    signal servo1_speed    : std_logic_vector(3 downto 0);
+    signal servo1_speed    : integer range 0 to 100000 := 0;
     signal servo1_angle		: std_logic_vector(7 downto 0);
     signal servo1_target	: std_logic_vector(7 downto 0);
-    signal servo1_timer		: std_logic_vector(15 downto 0);
+    signal servo1_timer		: integer range 0 to 100000 := 0;
 	 
-	 signal servo2_speed    : std_logic_vector(3 downto 0);
+	 signal servo2_speed    : integer range 0 to 100000 := 0;
     signal servo2_angle		: std_logic_vector(7 downto 0);
     signal servo2_target	: std_logic_vector(7 downto 0);
-    signal servo2_timer		: std_logic_vector(15 downto 0);
+    signal servo2_timer		: integer range 0 to 100000 := 0;
 	 
-	 signal servo3_speed    : std_logic_vector(3 downto 0);
+	 signal servo3_speed    : integer range 0 to 100000 := 0;
     signal servo3_angle		: std_logic_vector(7 downto 0);
     signal servo3_target	: std_logic_vector(7 downto 0);
-    signal servo3_timer		: std_logic_vector(15 downto 0);
+    signal servo3_timer		: integer range 0 to 100000 := 0;
 	 
-	 signal servo4_speed    : std_logic_vector(3 downto 0);
+	 signal servo4_speed    : integer range 0 to 100000 := 0;
     signal servo4_angle		: std_logic_vector(7 downto 0);
     signal servo4_target	: std_logic_vector(7 downto 0);
-    signal servo4_timer		: std_logic_vector(15 downto 0);
+    signal servo4_timer		: integer range 0 to 100000 := 0;
 
 begin
 
@@ -86,24 +87,22 @@ begin
 
 					when "0011" => -- 0x052 velocity set
 						if motor_sel(0) = '1' then
-							servo1_speed <= IO_DATA(3 downto 0);
+							servo1_speed <= 100000/to_integer(unsigned(IO_DATA(7 downto 0)));
 						end if;
 						
 						if motor_sel(1) = '1' then
-							servo2_speed <= IO_DATA(3 downto 0);
+							servo2_speed <= 100000/to_integer(unsigned(IO_DATA(7 downto 0)));
 						end if;
 						
 						if motor_sel(2) = '1' then
-							servo3_speed <= IO_DATA(3 downto 0);
+							servo3_speed <= 100000/to_integer(unsigned(IO_DATA(7 downto 0)));
 						end if;
 						
 						if motor_sel(3) = '1' then
-							servo4_speed <= IO_DATA(3 downto 0);
+							servo4_speed <= 100000/to_integer(unsigned(IO_DATA(7 downto 0)));
 						end if;
 
-					when others => 
-						
-						
+					when others => -- do nothing
 				
 				end case;
         end if;
@@ -114,10 +113,10 @@ begin
     begin
         if (RESETN = '0') then
             count <= x"0000";
-            servo1_timer <= x"0000";
-				servo2_timer <= x"0000";
-				servo3_timer <= x"0000";
-				servo4_timer <= x"0000";
+            servo1_timer <= 0;
+				servo2_timer <= 0;
+				servo3_timer <= 0;
+				servo4_timer <= 0;
 				
         elsif rising_edge(CLOCK) then
             -- count counts every clock tick
@@ -144,7 +143,7 @@ begin
 				if servo1_angle /= servo1_target then
 					servo1_timer <= servo1_timer + 1;
 				
-					if servo1_timer = servo1_speed then -- every X cycles (for now, this will be customizable)
+					if servo1_timer = servo1_speed then
 						if servo1_angle > servo1_target then
 							servo1_angle <= servo1_angle - x"01"; -- move by 1 deg
 							
@@ -153,14 +152,14 @@ begin
 							
 						end if;
 						
-						servo1_timer <= x"0000";
+						servo1_timer <= 0;
 					end if;
 				end if;
 				
 				if servo2_angle /= servo2_target then
 					servo2_timer <= servo2_timer + 1;
 				
-					if servo2_timer = servo2_speed then -- every X cycles (for now, this will be customizable)
+					if servo2_timer = servo2_speed then
 						if servo2_angle > servo2_target then
 							servo2_angle <= servo2_angle - x"01"; -- move by 1 deg
 							
@@ -169,14 +168,14 @@ begin
 							
 						end if;
 						
-						servo2_timer <= x"0000";
+						servo2_timer <= 0;
 					end if;
 				end if;
 				
 				if servo3_angle /= servo3_target then
 					servo3_timer <= servo3_timer + 1;
 				
-					if servo3_timer = servo3_speed then -- every X cycles (for now, this will be customizable)
+					if servo3_timer = servo3_speed then
 						if servo3_angle > servo3_target then
 							servo3_angle <= servo3_angle - x"01"; -- move by 1 deg
 							
@@ -185,14 +184,14 @@ begin
 							
 						end if;
 						
-						servo3_timer <= x"0000";
+						servo3_timer <= 0;
 					end if;
 				end if;
 				
 				if servo4_angle /= servo4_target then
 					servo4_timer <= servo4_timer + 1;
 				
-					if servo4_timer = servo4_speed then -- every X cycles (for now, this will be customizable)
+					if servo4_timer = servo4_speed then
 						if servo4_angle > servo4_target then
 							servo4_angle <= servo4_angle - x"01"; -- move by 1 deg
 							
@@ -201,7 +200,7 @@ begin
 							
 						end if;
 						
-						servo4_timer <= x"0000";
+						servo4_timer <= 0;
 					end if;
 				end if;
 				
