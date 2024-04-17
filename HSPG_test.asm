@@ -39,8 +39,6 @@ Run:
 	OUT 	AngleSel
 	
 	; backwards wave
-	LOADI	10
-	CALL 	Wait
 	
 	LOADI 	&B0001
 	OUT 	ServoSel

@@ -14,62 +14,60 @@ CONTENT BEGIN
 0006: B8B4; -- 	LOADI 	180
 0007: 9851; -- 	OUT 	AngleSel
 0008: B80A; -- 	LOADI	10
-0009: 803A; -- 	CALL 	Wait
+0009: 8038; -- 	CALL 	Wait
 000A: B802; -- 	LOADI 	&B0010
 000B: 9850; -- 	OUT 	ServoSel
 000C: B8B4; -- 	LOADI 	180
 000D: 9851; -- 	OUT 	AngleSel
 000E: B80A; -- 	LOADI	10
-000F: 803A; -- 	CALL 	Wait
+000F: 8038; -- 	CALL 	Wait
 0010: B804; -- 	LOADI 	&B0100
 0011: 9850; -- 	OUT 	ServoSel
 0012: B8B4; -- 	LOADI 	180
 0013: 9851; -- 	OUT 	AngleSel
 0014: B80A; -- 	LOADI	10
-0015: 803A; -- 	CALL 	Wait
+0015: 8038; -- 	CALL 	Wait
 0016: B808; -- 	LOADI 	&B1000
 0017: 9850; -- 	OUT 	ServoSel
 0018: B8B4; -- 	LOADI 	180
 0019: 9851; -- 	OUT 	AngleSel
-001A: B80A; -- 	LOADI	10
-001B: 803A; -- 	CALL 	Wait
-001C: B801; -- 	LOADI 	&B0001
-001D: 9850; -- 	OUT 	ServoSel
-001E: B800; -- 	LOADI 	0
-001F: 9851; -- 	OUT 	AngleSel
-0020: B80A; -- 	LOADI	10
-0021: 803A; -- 	CALL 	Wait
-0022: B802; -- 	LOADI 	&B0010
-0023: 9850; -- 	OUT 	ServoSel
-0024: B800; -- 	LOADI 	0
-0025: 9851; -- 	OUT 	AngleSel
-0026: B80A; -- 	LOADI	10
-0027: 803A; -- 	CALL 	Wait
-0028: B804; -- 	LOADI 	&B0100
-0029: 9850; -- 	OUT 	ServoSel
-002A: B800; -- 	LOADI 	0
-002B: 9851; -- 	OUT 	AngleSel
-002C: B80A; -- 	LOADI	10
-002D: 803A; -- 	CALL 	Wait
-002E: B808; -- 	LOADI 	&B1000
-002F: 9850; -- 	OUT 	ServoSel
-0030: B800; -- 	LOADI 	0
-0031: 9851; -- 	OUT 	AngleSel
-0032: 2804; -- 	JUMP	Run	
-0033: B80F; -- 	LOADI 	&B1111
-0034: 9850; -- 	OUT 	ServoSel
-0035: B8FF; -- 	LOADI 	&HFF
-0036: 9852; -- 	OUT		SpeedSel
-0037: B800; -- 	LOADI 	0
-0038: 9851; -- 	OUT		AngleSel
-0039: 8800; -- 	RETURN
-003A: 1041; -- 	STORE	TargetTime
-003B: 9802; -- 	OUT 	Timer
-003C: 9002; -- 	IN 		Timer
-003D: 9804; -- 	OUT 	Hex0
-003E: 2041; -- 	SUB		TargetTime
-003F: 303C; -- 	JNEG 	WaitLoop
-0040: 8800; -- 	RETURN
-0041: 0000; -- TargetTime:	DW 	0
-[0042..07FF] : 0000; -- [empty memory]
+001A: B801; -- 	LOADI 	&B0001
+001B: 9850; -- 	OUT 	ServoSel
+001C: B800; -- 	LOADI 	0
+001D: 9851; -- 	OUT 	AngleSel
+001E: B80A; -- 	LOADI	10
+001F: 8038; -- 	CALL 	Wait
+0020: B802; -- 	LOADI 	&B0010
+0021: 9850; -- 	OUT 	ServoSel
+0022: B800; -- 	LOADI 	0
+0023: 9851; -- 	OUT 	AngleSel
+0024: B80A; -- 	LOADI	10
+0025: 8038; -- 	CALL 	Wait
+0026: B804; -- 	LOADI 	&B0100
+0027: 9850; -- 	OUT 	ServoSel
+0028: B800; -- 	LOADI 	0
+0029: 9851; -- 	OUT 	AngleSel
+002A: B80A; -- 	LOADI	10
+002B: 8038; -- 	CALL 	Wait
+002C: B808; -- 	LOADI 	&B1000
+002D: 9850; -- 	OUT 	ServoSel
+002E: B800; -- 	LOADI 	0
+002F: 9851; -- 	OUT 	AngleSel
+0030: 2804; -- 	JUMP	Run	
+0031: B80F; -- 	LOADI 	&B1111
+0032: 9850; -- 	OUT 	ServoSel
+0033: B8FF; -- 	LOADI 	&HFF
+0034: 9852; -- 	OUT		SpeedSel
+0035: B800; -- 	LOADI 	0
+0036: 9851; -- 	OUT		AngleSel
+0037: 8800; -- 	RETURN
+0038: 103F; -- 	STORE	TargetTime
+0039: 9802; -- 	OUT 	Timer
+003A: 9002; -- 	IN 		Timer
+003B: 9804; -- 	OUT 	Hex0
+003C: 203F; -- 	SUB		TargetTime
+003D: 303A; -- 	JNEG 	WaitLoop
+003E: 8800; -- 	RETURN
+003F: 0000; -- TargetTime:	DW 	0
+[0040..07FF] : 0000; -- [empty memory]
 END;
