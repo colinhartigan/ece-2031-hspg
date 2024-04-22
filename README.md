@@ -1,3 +1,12 @@
+| Address  | Servo(s)         |
+| ------   | --------         |
+| 0x050    | Servo select     |
+| 0x051    | Set angle        |
+| 0x052    | Set velocity     |
+| 0x053    | Set acceleration |
+| 0x05D    | Get position     |
+| 0x05E    | Execute movement |
+
 # Servo control doodad
 
 ## `0x050`: Servo select
