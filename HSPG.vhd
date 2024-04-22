@@ -31,22 +31,22 @@ architecture a of HSPG is
 	 
 	 signal motor_sel	: std_logic_vector(15 downto 0);
 	 
-    signal servo1_speed    : integer range 0 to 100000 := 0;
+    signal servo1_speed    : integer range 0 to 100000 := 180;
     signal servo1_angle		: std_logic_vector(7 downto 0);
     signal servo1_target	: std_logic_vector(7 downto 0);
-    signal servo1_timer		: integer range 0 to 100000 := 0;
+    signal servo1_timer		: integer range 0 to 100000 := 180;
 	 
-	 signal servo2_speed    : integer range 0 to 100000 := 0;
+	 signal servo2_speed    : integer range 0 to 100000 := 180;
     signal servo2_angle		: std_logic_vector(7 downto 0);
     signal servo2_target	: std_logic_vector(7 downto 0);
     signal servo2_timer		: integer range 0 to 100000 := 0;
 	 
-	 signal servo3_speed    : integer range 0 to 100000 := 0;
+	 signal servo3_speed    : integer range 0 to 100000 := 180;
     signal servo3_angle		: std_logic_vector(7 downto 0);
     signal servo3_target	: std_logic_vector(7 downto 0);
     signal servo3_timer		: integer range 0 to 100000 := 0;
 	 
-	 signal servo4_speed    : integer range 0 to 100000 := 0;
+	 signal servo4_speed    : integer range 0 to 100000 := 180;
     signal servo4_angle		: std_logic_vector(7 downto 0);
     signal servo4_target	: std_logic_vector(7 downto 0);
     signal servo4_timer		: integer range 0 to 100000 := 0;
@@ -54,13 +54,17 @@ architecture a of HSPG is
 begin
 
     -- Latch data on rising edge of CS
-    process (RESETN, CS) begin
+    process (RESETN, CS) 
+		variable speed_sanitized: integer range 0 to 1028;
+		
+	 begin
         if RESETN = '0' then
             command <= x"0000";
 				servo1_target <= x"00";
 				servo2_target <= x"00";
 				servo3_target <= x"00";
 				servo4_target <= x"00";
+				motor_sel <= x"0000";
 				
         elsif IO_WRITE = '1' and rising_edge(CS) then
 
@@ -86,20 +90,25 @@ begin
 						end if;
 
 					when "0011" => -- 0x052 velocity set
+						speed_sanitized := to_integer((unsigned(IO_DATA(9 downto 0))));
+						if speed_sanitized = 0 then
+							speed_sanitized := 1;
+						end if;
+						
 						if motor_sel(0) = '1' then
-							servo1_speed <= 100000/to_integer(unsigned(IO_DATA(7 downto 0)));
+							servo1_speed <= 100000/speed_sanitized;
 						end if;
 						
 						if motor_sel(1) = '1' then
-							servo2_speed <= 100000/to_integer(unsigned(IO_DATA(7 downto 0)));
+							servo2_speed <= 100000/speed_sanitized;
 						end if;
 						
 						if motor_sel(2) = '1' then
-							servo3_speed <= 100000/to_integer(unsigned(IO_DATA(7 downto 0)));
+							servo3_speed <= 100000/speed_sanitized;
 						end if;
 						
 						if motor_sel(3) = '1' then
-							servo4_speed <= 100000/to_integer(unsigned(IO_DATA(7 downto 0)));
+							servo4_speed <= 100000/speed_sanitized;
 						end if;
 
 					when others => -- do nothing

@@ -1,13 +1,24 @@
 ORG 0
 
-Setup:
+ModeCheck:
+	IN		Switches
+	OUT		LEDs
+	JZERO	Wave
+	
+	ADDI	-1
+	JZERO	Sequential
+	
+	ADDI	-1
+	JZERO	Jumpy
+	
+	JUMP	ModeCheck
+
+Wave:
 	LOADI 	&B1111
 	OUT 	ServoSel
 	LOADI 	60
 	OUT		SpeedSel
-
-Run:
-
+WaveMove:
 	; forewards wave
 	LOADI 	&B0001
 	OUT 	ServoSel
@@ -69,18 +80,110 @@ Run:
 	LOADI 	0
 	OUT 	AngleSel
 	
-	JUMP	Run	
+	JUMP	ModeCheck	
 	
-Reset:
+	
+SeqAngle: 	DW	180
+Sequential:
 	LOADI 	&B1111
-	OUT 	ServoSel
-	LOADI 	&HFF
+	OUT		ServoSel
+	LOADI	360
 	OUT		SpeedSel
-	
-	LOADI 	0
+SequentialMove:
+	; sequentially move motors
+	LOADI	&B0001
+	OUT		ServoSel
+	LOAD 	SeqAngle
 	OUT		AngleSel
 	
-	RETURN
+	LOADI 	5
+	CALL	Wait
+	
+	LOADI	&B0010
+	OUT		ServoSel
+	LOAD 	SeqAngle
+	OUT		AngleSel
+	
+	LOADI 	5
+	CALL	Wait
+	
+	LOADI	&B0100
+	OUT		ServoSel
+	LOAD 	SeqAngle
+	OUT		AngleSel
+	
+	LOADI 	5
+	CALL	Wait
+	
+	LOADI	&B1000
+	OUT		ServoSel
+	LOAD 	SeqAngle
+	OUT		AngleSel
+	
+	LOADI 	5
+	CALL	Wait
+	
+	; if next angle is negative (i.e. just moved motors to zero), reset and go to mode check
+	LOAD	SeqAngle
+	ADDI	-180
+	STORE	SeqAngle
+	
+	JZERO	SequentialMove
+	
+	LOADI	180
+	STORE	SeqAngle
+	JUMP	ModeCheck
+
+JumpyAngle:	DW 	0
+Jumpy:
+	LOADI	&B1111
+	OUT		ServoSel
+	LOADI	1023
+	OUT		SpeedSel
+JumpyMove:
+	LOADI	&B0001
+	OUT		ServoSel
+	LOAD	JumpyAngle
+	OUT		AngleSel
+	
+	LOADI	1
+	CALL	Wait
+	
+	LOADI	&B1000
+	OUT		ServoSel
+	LOAD	JumpyAngle
+	OUT		AngleSel
+	
+	LOADI	1
+	CALL	Wait
+	
+	LOADI	&B0100
+	OUT		ServoSel
+	LOAD	JumpyAngle
+	OUT		AngleSel
+	
+	LOADI	1
+	CALL	Wait
+	
+	LOADI	&B0010
+	OUT		ServoSel
+	LOAD	JumpyAngle
+	OUT		AngleSel
+	
+	LOADI	1
+	CALL	Wait
+	
+	LOAD 	JumpyAngle
+	ADDI	10
+	STORE	JumpyAngle
+	ADDI	-179
+	JNEG	JumpyMove
+	
+	LOADI	0
+	STORE	JumpyAngle
+	
+	JUMP	ModeCheck
+	
 	
 Wait:
 	STORE	TargetTime
