@@ -2,14 +2,20 @@ ORG 0
 
 ModeCheck:
 	IN		Switches
-	OUT		LEDs
+	STORE	SWState
 	JZERO	Wave
 	
+	; sw0
 	ADDI	-1
 	JZERO	Sequential
 	
+	; sw1
 	ADDI	-1
 	JZERO	Jumpy
+
+	; sw2
+	ADDI	-2
+	JZERO	Dance
 	
 	JUMP	ModeCheck
 
@@ -134,6 +140,7 @@ SequentialMove:
 	STORE	SeqAngle
 	JUMP	ModeCheck
 
+
 JumpyAngle:	DW 	0
 Jumpy:
 	LOADI	&B1111
@@ -141,6 +148,7 @@ Jumpy:
 	LOADI	1023
 	OUT		SpeedSel
 JumpyMove:
+
 	LOADI	&B0001
 	OUT		ServoSel
 	LOAD	JumpyAngle
@@ -185,19 +193,116 @@ JumpyMove:
 	JUMP	ModeCheck
 	
 	
-Wait:
-	STORE	TargetTime
-	OUT 	Timer
+GroupA: DW	&B1100
+GroupB: DW	&B0011
+Buf:	DW	&B0000
+Dance:
+	LOADI	&B1111
+	OUT		ServoSel
+	LOADI	1023
+	OUT		SpeedSel
+	
+DanceMove:
+	; \o\;
+	LOAD	GroupA
+	OUT		ServoSel
+	LOADI	135
+	OUT		AngleSel
+	
+	LOAD	GroupB
+	OUT		ServoSel
+	LOADI	45
+	OUT		AngleSel
+	
+	LOADI	6
+	CALL 	Wait
 
-WaitLoop:
-	IN 		Timer
-	OUT 	Hex0
-	SUB		TargetTime
-	JNEG 	WaitLoop
-	RETURN
+	; /o/;
+	LOAD	GroupA
+	OUT		ServoSel
+	LOADI	45
+	OUT		AngleSel
+	
+	LOAD	GroupB
+	OUT		ServoSel
+	LOADI	135
+	OUT		AngleSel
+	
+	LOADI 	6
+	CALL	Wait
+	
+	; \o\;
+	LOAD	GroupA
+	OUT		ServoSel
+	LOADI	135
+	OUT		AngleSel
+	
+	LOAD	GroupB
+	OUT		ServoSel
+	LOADI	45
+	OUT		AngleSel
+	
+	LOADI 	3
+	CALL	Wait
+	
+	; _o_;
+	
+	LOADI	&B1010
+	OUT		ServoSel
+	LOADI	0
+	OUT		AngleSel
+	
+	LOADI	&B0101
+	OUT		ServoSel
+	LOADI	180
+	OUT		AngleSel
+	
+	LOADI 	3
+	CALL	Wait
+	
+	; \o\;
+	LOAD	GroupA
+	OUT		ServoSel
+	LOADI	135
+	OUT		AngleSel
+	
+	LOAD	GroupB
+	OUT		ServoSel
+	LOADI	45
+	OUT		AngleSel
+	
+	LOAD	GroupA
+	STORE	Buf
+	LOAD	GroupB
+	STORE	GroupA
+	LOAD	Buf
+	STORE	GroupB
+	
+	LOADI	9
+	CALL 	Wait
+	
+	JUMP 	ModeCheck
+	
 
 	
 
+Wait:
+	STORE	TargetTime
+	OUT 	Timer
+WaitLoop:
+	IN 		Timer
+	SUB		TargetTime
+	JNEG 	WaitLoop
+	RETURN
+	
+CheckSwitches:
+	IN		Switches
+	AND		SWState
+	
+	
+
+	
+SWState:	DW 	0
 TargetTime:	DW 	0
 	
 ; IO address constants
@@ -210,3 +315,4 @@ Hex1:      	EQU 005
 ServoSel:  	EQU &H050
 AngleSel:  	EQU &H051
 SpeedSel:  	EQU &H052
+ServoStatus: EQU &H05E

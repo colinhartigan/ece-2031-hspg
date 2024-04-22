@@ -15,7 +15,7 @@ entity HSPG is
 
         IO_WRITE     : in std_logic;
         IO_SEL    	: in std_logic_vector(3 downto 0);
-        IO_DATA     	: in std_logic_vector(15 downto 0);
+        IO_DATA     	: inout std_logic_vector(15 downto 0);
 
         CLOCK       	: in std_logic;
         RESETN      	: in std_logic;
@@ -26,10 +26,9 @@ end HSPG;
 
 architecture a of HSPG is
 
-    signal command	: std_logic_vector(15 downto 0);  -- command sent from SCOMP
-    signal count   	: std_logic_vector(15 downto 0);  -- internal counter
+    signal count   			: std_logic_vector(15 downto 0);  -- internal counter
 	 
-	 signal motor_sel	: std_logic_vector(15 downto 0);
+	 signal motor_sel			: std_logic_vector(15 downto 0);
 	 
     signal servo1_speed    : integer range 0 to 100000 := 180;
     signal servo1_angle		: std_logic_vector(7 downto 0);
@@ -50,22 +49,40 @@ architecture a of HSPG is
     signal servo4_angle		: std_logic_vector(7 downto 0);
     signal servo4_target	: std_logic_vector(7 downto 0);
     signal servo4_timer		: integer range 0 to 100000 := 0;
+	 
+	 signal IO_OUT    		: STD_LOGIC;
+	 signal STATUS				: STD_LOGIC_VECTOR(15 downto 0);
+	 signal STATUS_BUF		: STD_LOGIC_VECTOR(15 downto 0);
+	
 
 begin
 
+		-- Use LPM function to create bidirection I/O data bus
+		IO_BUS: lpm_bustri
+		GENERIC MAP (
+			lpm_width => 16
+		)
+		PORT MAP (
+			data     => STATUS_BUF,
+			enabledt => IO_OUT,
+			tridata  => IO_DATA
+		);
+
+	 IO_OUT <= '1' when IO_SEL = "1111" else '0';
+
     -- Latch data on rising edge of CS
     process (RESETN, CS) 
-		variable speed_sanitized: integer range 0 to 1028;
+		variable speed_sanitized: integer range 0 to 1024;
 		
 	 begin
         if RESETN = '0' then
-            command <= x"0000";
 				servo1_target <= x"00";
 				servo2_target <= x"00";
 				servo3_target <= x"00";
 				servo4_target <= x"00";
 				motor_sel <= x"0000";
 				
+			-- input ops
         elsif IO_WRITE = '1' and rising_edge(CS) then
 
 				case IO_SEL is 
@@ -110,10 +127,11 @@ begin
 						if motor_sel(3) = '1' then
 							servo4_speed <= 100000/speed_sanitized;
 						end if;
-
+						
 					when others => -- do nothing
 				
 				end case;
+				
         end if;
     end process;
 
@@ -150,6 +168,7 @@ begin
 				
 				-- sets servo angles
 				if servo1_angle /= servo1_target then
+					STATUS(0) <= '1';
 					servo1_timer <= servo1_timer + 1;
 				
 					if servo1_timer = servo1_speed then
@@ -163,9 +182,12 @@ begin
 						
 						servo1_timer <= 0;
 					end if;
+				else
+					STATUS(0) <= '0';
 				end if;
 				
 				if servo2_angle /= servo2_target then
+					STATUS(1) <= '1';
 					servo2_timer <= servo2_timer + 1;
 				
 					if servo2_timer = servo2_speed then
@@ -179,9 +201,12 @@ begin
 						
 						servo2_timer <= 0;
 					end if;
+				else
+					STATUS(1) <= '0';
 				end if;
 				
 				if servo3_angle /= servo3_target then
+					STATUS(2) <= '1';
 					servo3_timer <= servo3_timer + 1;
 				
 					if servo3_timer = servo3_speed then
@@ -195,9 +220,12 @@ begin
 						
 						servo3_timer <= 0;
 					end if;
+				else
+					STATUS(2) <= '0';
 				end if;
 				
 				if servo4_angle /= servo4_target then
+					STATUS(3) <= '1';
 					servo4_timer <= servo4_timer + 1;
 				
 					if servo4_timer = servo4_speed then
@@ -211,6 +239,8 @@ begin
 						
 						servo4_timer <= 0;
 					end if;
+				else
+					STATUS(3) <= '0';
 				end if;
 				
 				-- once the counter reaches the high time for the desired angle (angle + .6ms), set pulse low
@@ -230,7 +260,6 @@ begin
 					PULSE(3) <= '0';
 				end if;
 				
-				
             -- 20ms fixed period then reset for next clock cycle
             if count = x"07D0" then  -- 20ms has elapsed
                 -- reset the counter and set the output high
@@ -243,5 +272,15 @@ begin
 					 
         end if;
     end process;
+	 
+	 -- Don't change output buffer if an IO operation is occuring
+	PROCESS (IO_SEL, STATUS, STATUS_BUF)
+	BEGIN
+		IF IO_SEL = "1111" THEN
+			STATUS_BUF <= STATUS;
+		ELSE
+			STATUS_BUF <= STATUS_BUF;
+		END IF;
+	END PROCESS;
 
 end a;
