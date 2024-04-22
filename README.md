@@ -1,4 +1,4 @@
-| Address  | Servo(s)         |
+| Address  | Command          |
 | ------   | --------         |
 | 0x050    | Servo select     |
 | 0x051    | Set angle        |
