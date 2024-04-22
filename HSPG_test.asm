@@ -19,6 +19,10 @@ ModeCheck:
 
     JUMP    ModeCheck
 
+
+;	=========================================================
+;	DEMO 1 --------------------------------------------------
+
 Wave:
     LOADI   &B1111
     OUT     ServoSel
@@ -89,7 +93,23 @@ WaveMove:
     JUMP    ModeCheck
 
 
-SeqAngle:    DW      180
+;	=========================================================
+;	DEMO 2 --------------------------------------------------
+
+SeqAngle:   DW  	180
+SeqWaitTarget: DW	&B0000 
+SeqSpeed:	DW 		360
+
+SeqWait:
+	STORE	SeqWaitTarget
+SeqWaitLoop:
+	IN		ServoStatus
+	AND		SeqWaitTarget
+	JZERO	SeqWaitDone
+	JUMP	SeqWaitLoop
+SeqWaitDone:
+	RETURN
+
 Sequential:
     LOADI   &B1111
     OUT     ServoSel
@@ -102,32 +122,32 @@ SequentialMove:
     LOAD    SeqAngle
     OUT     AngleSel
 
-    LOADI   5
-    CALL    Wait
+    LOADI   &B0001
+    CALL    SeqWait
 
     LOADI   &B0010
     OUT     ServoSel
     LOAD    SeqAngle
     OUT     AngleSel
 
-    LOADI   5
-    CALL    Wait
+    LOADI   &B0010
+    CALL    SeqWait
 
     LOADI   &B0100
     OUT     ServoSel
     LOAD    SeqAngle
     OUT     AngleSel
 
-    LOADI   5
-    CALL    Wait
+    LOADI   &B0100
+    CALL    SeqWait
 
     LOADI   &B1000
     OUT     ServoSel
     LOAD    SeqAngle
     OUT     AngleSel
 
-    LOADI   5
-    CALL    Wait
+    LOADI   &B1000
+    CALL    SeqWait
 
     ; if next angle is negative (i.e. just moved motors to zero), reset and go to mode check
     LOAD    SeqAngle
@@ -140,6 +160,9 @@ SequentialMove:
     STORE   SeqAngle
     JUMP    ModeCheck
 
+
+;	=========================================================
+;	DEMO 3 --------------------------------------------------
 
 JumpyAngle:    DW      0
 Jumpy:
@@ -192,6 +215,9 @@ JumpyMove:
 
     JUMP    ModeCheck
 
+
+;	=========================================================
+;	DEMO 4 --------------------------------------------------
 
 GroupA:    DW      &B1100
 GroupB:    DW      &B0011
