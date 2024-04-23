@@ -101,19 +101,36 @@ SeqWaitTarget: DW	&B0000
 SeqSpeed:	DW 		360
 
 SeqWait:
+	OUT		Hex0
 	STORE	SeqWaitTarget
 SeqWaitLoop:
 	IN		ServoStatus
 	AND		SeqWaitTarget
+	OUT 	Hex0
 	JZERO	SeqWaitDone
 	JUMP	SeqWaitLoop
 SeqWaitDone:
 	RETURN
 
 Sequential:
-    LOADI   &B1111
+    LOADI   &B1000
+    OUT     ServoSel
+    LOADI   180
+    OUT     SpeedSel
+	
+	LOADI   &B0100
     OUT     ServoSel
     LOADI   360
+    OUT     SpeedSel
+	
+	LOADI   &B0010
+    OUT     ServoSel
+    LOADI   540
+    OUT     SpeedSel
+	
+	LOADI   &B0001
+    OUT     ServoSel
+    LOADI   720
     OUT     SpeedSel
 SequentialMove:
     ; sequentially move motors
